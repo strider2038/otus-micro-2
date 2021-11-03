@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: user-service-migrations
+spec:
+  template:
+    metadata:
+      name: user-service-migrations
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: user-service-migrations-job
+          image: strider2038/otus-micro-2-user-migrations
+          env:
+            - name: GOOSE_DBSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: user-service-secret
+                  key: GOOSE_DBSTRING
+  backoffLimit: 0

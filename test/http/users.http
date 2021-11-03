@@ -1,4 +1,4 @@
-POST http://localhost:8080/api/v1/user
+POST {{host}}/api/v1/user
 Content-Type: application/json
 
 {
@@ -18,7 +18,7 @@ client.global.set("userId", response.body.id);
 
 ###
 
-PUT http://localhost:8080/api/v1/user/{{userId}}
+PUT {{host}}/api/v1/user/{{userId}}
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ client.test("Request executed successfully", function() {
 
 ###
 
-GET http://localhost:8080/api/v1/user/{{userId}}
+GET {{host}}/api/v1/user/{{userId}}
 
 > {%
 client.test("Request executed successfully", function() {
@@ -48,7 +48,7 @@ client.test("Request executed successfully", function() {
 ###
 
 ## not existing user
-GET http://localhost:8080/api/v1/user/123456789
+GET {{host}}/api/v1/user/123456789
 
 > {%
 client.test("Request executed successfully", function() {
@@ -59,7 +59,7 @@ client.test("Request executed successfully", function() {
 ###
 
 ## duplicated email
-PUT http://localhost:8080/api/v1/user/{{userId}}
+PUT {{host}}/api/v1/user/{{userId}}
 Content-Type: application/json
 
 {
@@ -77,10 +77,18 @@ client.test("Request executed successfully", function() {
 
 ###
 
-DELETE http://localhost:8080/api/v1/user/{{userId}}
+DELETE {{host}}/api/v1/user/{{userId}}
 
 > {%
 client.test("Request executed successfully", function() {
   client.assert(response.status === 204, "Response status is not 204");
 });
  %}
+
+###
+
+GET {{host}}/health
+
+###
+
+GET {{host}}/version

@@ -16,31 +16,35 @@ import (
 	"net/http"
 	"os"
 
-	"user-service/internal/api"
-	"user-service/internal/postgres"
-	"user-service/internal/postgres/database"
+	"user-service/internal/di"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+var (
+	version = ""
+)
+
+const (
+	defaultPort = "8000"
+)
+
 func main() {
 	log.Printf("Server started")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
+	env := os.Getenv("APP_ENV")
+	if env == "" {
+		env = "unknown"
+	}
 
 	connection, err := pgxpool.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal("failed to connect to postgres:", err)
 	}
-	err = connection.Ping(context.Background())
-	if err != nil {
-		log.Fatal("failed to ping postgres:", err)
-	}
-	db := database.New(connection)
+	router := di.NewRouter(connection, version, env)
 
-	userRepository := postgres.NewUserRepository(db)
-	userApiService := api.NewUserApiService(userRepository)
-	userApiController := api.NewUserApiController(userApiService)
-
-	router := api.NewRouter(userApiController)
-
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
