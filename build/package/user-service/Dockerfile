@@ -11,6 +11,8 @@ RUN set -xe \
 
 FROM scratch
 
+ENV DATABASE_URL=""
+
 COPY --from=build-env /project/cmd/user-service/user-service /app/
 
 EXPOSE 8000

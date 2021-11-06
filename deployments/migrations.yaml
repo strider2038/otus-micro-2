@@ -3,6 +3,7 @@ kind: Job
 metadata:
   name: user-service-migrations
 spec:
+  ttlSecondsAfterFinished: 30
   template:
     metadata:
       name: user-service-migrations

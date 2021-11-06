@@ -42,3 +42,17 @@ spec:
               path: /ready
             initialDelaySeconds: 10
             periodSeconds: 5
+      initContainers:
+        - name: db-waiter
+          image: strider2038/otus-micro-2-db-waiter
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: user-service-secret
+                  key: DATABASE_URL
+            - name: MIGRATION_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: user-service-config
+                  key: MIGRATION_VERSION

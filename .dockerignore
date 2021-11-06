@@ -1,0 +1,8 @@
+*
+
+!/build/package/migrations/.docker
+!/cmd/
+!/internal/
+!/go.mod
+!/go.sum
+!/scripts/migrations/

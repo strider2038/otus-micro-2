@@ -4,6 +4,7 @@ metadata:
   name: user-service-config
 data:
   APP_ENV: test
+  MIGRATION_VERSION: "20211103204247"
 ---
 apiVersion: v1
 kind: Secret

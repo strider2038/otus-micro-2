@@ -14,6 +14,10 @@ build:
       context: .
       docker:
         dockerfile: build/package/migrations/Dockerfile
+    - image: strider2038/otus-micro-2-db-waiter
+      context: .
+      docker:
+        dockerfile: build/package/db-waiter/Dockerfile
 deploy:
   kubectl:
     defaultNamespace: otus
@@ -29,5 +33,6 @@ deploy:
         namespace: "otus"
         remoteChart: "postgresql"
         repo: 'https://charts.bitnami.com/bitnami'
+        wait: true
         valuesFiles:
           - deployments/postgres/values.yaml
