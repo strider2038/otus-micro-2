@@ -3,6 +3,7 @@ package di
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"user-service/internal/api"
@@ -40,14 +41,22 @@ func NewRouter(connection *pgxpool.Pool, version, env string) http.Handler {
 	})
 
 	router.HandleFunc("/version", func(writer http.ResponseWriter, request *http.Request) {
+		dbVersion, err := postgres.GetMigrationsVersion(connection)
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			log.Println("error:", err)
+		}
+
 		writer.Header().Set("content-type", "application/json")
 		writer.WriteHeader(http.StatusOK)
 		response, _ := json.Marshal(struct {
-			Environment string `json:"environment"`
-			Version     string `json:"version"`
+			Environment        string `json:"environment"`
+			ApplicationVersion string `json:"application_version"`
+			DatabaseVersion    int64  `json:"database_version"`
 		}{
-			Environment: env,
-			Version:     version,
+			Environment:        env,
+			ApplicationVersion: version,
+			DatabaseVersion:    dbVersion,
 		})
 		writer.Write(response)
 	})

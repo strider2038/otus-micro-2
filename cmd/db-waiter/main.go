@@ -6,12 +6,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/jackc/pgx/v4"
-)
+	"user-service/internal/postgres"
 
-const (
-	MigrationsTable = "goose_db_version"
-	SelectVersion   = "SELECT version_id FROM " + MigrationsTable + " ORDER BY version_id DESC LIMIT 1"
+	"github.com/jackc/pgx/v4"
 )
 
 func main() {
@@ -26,11 +23,9 @@ func main() {
 		log.Fatal("failed to ping postgres:", err)
 	}
 
-	row := connection.QueryRow(context.Background(), SelectVersion)
-	var actualVersion int64
-	err = row.Scan(&actualVersion)
+	actualVersion, err := postgres.GetMigrationsVersion(connection)
 	if err != nil {
-		log.Fatalf("failed to select migrations version from %s: %s", MigrationsTable, err)
+		log.Fatal(err)
 	}
 
 	if actualVersion < int64(expectedVersion) {
