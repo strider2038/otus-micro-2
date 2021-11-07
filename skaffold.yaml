@@ -13,7 +13,7 @@ build:
         dockerfile: build/package/user-service/Dockerfile
         buildArgs:
           APP_VERSION: local
-    - image: strider2038/otus-micro-2-user-migrations
+    - image: strider2038/otus-micro-2-migrations
       context: .
       docker:
         dockerfile: build/package/migrations/Dockerfile

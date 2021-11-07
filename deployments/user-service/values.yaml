@@ -15,7 +15,7 @@ migrations:
   version: ""
   jobTTL: 30
   image:
-    repository: strider2038/otus-micro-2-user-migrations
+    repository: strider2038/otus-micro-2-migrations
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
