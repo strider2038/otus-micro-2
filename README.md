@@ -2,10 +2,15 @@
 
 ## Домашнее задание выполнено для курса ["Microservice architecture"](https://otus.ru/lessons/microservice-architecture/)
 
-Для запуска использовать команду
+Для запуска использовать команды
 
 ```bash
-kubectl apply -f deployments
+## для первого запуска зарегистрировать репозиторий bitnami
+helm repo add bitnami https://charts.bitnami.com/bitnami
+## запуск БД
+helm install --wait -f deployments/postgres/values.yaml postgres bitnami/postgresql
+## запуск проекта
+helm install --wait -f deployments/user-service-values.yaml user-service ./deployments/user-service
 ```
 
 Тесты Postman расположены в директории `test/postman`. Запуск тестов.
