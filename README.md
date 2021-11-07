@@ -13,3 +13,9 @@ kubectl apply -f deployments
 ```bash
 newman run ./test/postman/test.postman_collection.json
 ```
+
+Или с использованием Docker.
+
+```bash
+docker run -v $PWD/test/postman/:/etc/newman --network host -t postman/newman:alpine run test.postman_collection.json
+```

@@ -3,6 +3,9 @@ kind: Config
 metadata:
   name: otus-micro
 build:
+  tagPolicy:
+    envTemplate:
+      template: "v1"
   artifacts:
     - image: strider2038/otus-micro-2-user-service
       context: .
@@ -19,14 +22,6 @@ build:
       docker:
         dockerfile: build/package/db-waiter/Dockerfile
 deploy:
-  kubectl:
-    defaultNamespace: otus
-    manifests:
-      - deployments/config.yaml
-      - deployments/migrations.yaml
-      - deployments/deployment.yaml
-      - deployments/ingress.yaml
-      - deployments/service.yaml
   helm:
     releases:
       - name: "postgres"
@@ -36,3 +31,9 @@ deploy:
         wait: true
         valuesFiles:
           - deployments/postgres/values.yaml
+      - name: "user-service"
+        namespace: "otus"
+        chartPath: "deployments/user-service"
+        wait: true
+        valuesFiles:
+          - "deployments/user-service-values.yaml"

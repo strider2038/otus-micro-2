@@ -1,0 +1,9 @@
+replicaCount: 2
+
+migrations:
+  version: "20211103204247"
+
+secrets:
+  postgres:
+    password: "pa$$word"
+    host: "postgres-postgresql.otus.svc.cluster.local"
